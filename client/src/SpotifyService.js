@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { clientPriv, clientSecretPriv } from './privTokens.js';
 
-const client_id = 'c842affbe0c54826a688ffceca30cbd7';
-const client_secret = '4ea41a74cade41c2ab95214ff851c71b';
+const client_id = clientPriv;
+const client_secret = clientSecretPriv;
 let token = '';
 
 const getToken = async () => {
