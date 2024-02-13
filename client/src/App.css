@@ -20,13 +20,26 @@ body{
   color: white;
 }
 
+.MainContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70%, 1fr));
+  gap: 20px;
+}
+
+@media (min-width: 552px) {
+  .MainContainer {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
 .ArtistBox{
   display: flex;
-  justify-content: center;
+  justify-content: top;
   flex-direction: column;
   border-radius: 6.5px;
   background-color: rgb(27, 27, 27);
   margin: 3%;
+  padding: 0;
 }
 
 .ArtistBoxHeader{
@@ -60,10 +73,10 @@ body{
 }
 
 .ArtistBoxImg{
-  border-radius: 2%;
+  border-radius: 10px;
   margin: 5%;
   width: 90%;
-  max-height: 150px;
+  max-height: 200px;
   object-fit: cover;
 }
 
@@ -79,18 +92,59 @@ body{
   font-family: 'DMSans', sans-serif;
   font-weight: bold;
   border-style: none;
-  border: 1px solid white; 
   border-radius: 5px;
   margin-left: 2.5px;
+  font-size: large;
+  padding: 5px;
+}
+
+.SearchBar button:hover{
+  background-color: rgb(39, 39, 39);
+  box-shadow: 0 0 7px 1px rgba(134, 134, 134, 0.7);
+ 
 }
 
 .SearchBar input{
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(46, 46, 46);
   color: white;
   font-family: 'DMSans', sans-serif;
   font-weight: bold;
   border-style: none;
-  border: 1px solid white; 
+  border: 1px solid rgb(87, 87, 87);
   border-radius: 5px;
   margin-right: 2.5px;
+  font-size: large;
+  padding-left: 7px;
+  padding-right: 7px;
+  
+}
+
+.SearchBar input:hover{
+  background-color: rgb(39, 39, 39);
+  box-shadow: 0 0 7px 1px rgba(134, 134, 134, 0.7);
+}
+
+.ArtistBoxAlbums{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 5%;
+}
+
+.ArtistBoxAlbums img{
+  max-width: 50px;
+  position: relative;
+}
+
+.ArtistBoxAlbumName{
+  font-weight: bold;
+  font-size: xx-small;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 7px;
+  overflow: hidden;
+  max-width: 100px;  
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: auto;
+  margin-bottom: 10px;
 }

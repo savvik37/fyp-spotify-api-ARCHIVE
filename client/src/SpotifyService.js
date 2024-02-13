@@ -16,17 +16,29 @@ const getToken = async () => {
     });
   
     token = result.data.access_token;
-  };
+};
 
-  const searchArtists = async (query) => {
+  const searchArtists = async (artistId) => {
     if (!token) await getToken();
   
-    const result = await axios(`https://api.spotify.com/v1/search?q=${query}&type=artist`, {
+    const result = await axios(`https://api.spotify.com/v1/search?q=${artistId}&type=artist`, {
       method: 'GET',
       headers: { 'Authorization' : 'Bearer ' + token }
     });
   
     return result.data.artists.items;
   };
+
+  const searchAlbums = async (artistId) => {
+    if (!token) await getToken();
   
-  export default searchArtists;
+    const result = await axios(`https://api.spotify.com/v1/artists/${artistId}/albums`, {
+      method: 'GET',
+      headers: { 'Authorization' : 'Bearer ' + token }
+    });
+  
+    console.log(result.data); // Add this line
+    return result.data.items.slice(0, 6);
+  };
+  
+  export { searchArtists, searchAlbums };
