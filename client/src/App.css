@@ -160,3 +160,7 @@ body{
 .MessageText{
   color: white;
 }
+
+.message{
+  list-style: none;
+}

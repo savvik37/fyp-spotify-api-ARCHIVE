@@ -8,6 +8,13 @@ function App() {
   const [artistName, setArtistName] = useState('');
   const [currentArtist, setCurrentArtist] = useState(null);
   const [openChatCheck, setOpenChatCheck] = useState(false);
+  const [latestMessage, setLatestMessage] = useState(null);
+  const [searchState, setSearchState] = useState('');
+
+  const handleNewMessage = (message) => {
+    console.log('New message received in App:', message);
+    setLatestMessage(message);
+  };
 
   const handleArtistClick = (name) => {
     setArtistName(name);
@@ -22,8 +29,13 @@ function App() {
   return (
     <div className='App'>
       <div>
-        {currentArtist && openChatCheck && <Chat artist={currentArtist} setOpenChatCheck={setOpenChatCheck} />}
-        {!openChatCheck && <Search openChat={openChat} handleArtistClick={handleArtistClick} />}
+        {latestMessage && (
+        <div className="LatestMessage">
+          Latest Message: {latestMessage.artist}: {latestMessage.message}
+        </div>
+      )}
+        {currentArtist && openChatCheck && <Chat artist={currentArtist} setOpenChatCheck={setOpenChatCheck} onNewMessage={handleNewMessage} />}
+        {!openChatCheck && <Search openChat={openChat} handleArtistClick={handleArtistClick} setSearchState={setSearchState} searchState={searchState}/>}
       </div>
     </div>
   );

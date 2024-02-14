@@ -1,14 +1,18 @@
 // Search.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {searchArtists, searchAlbums} from './SpotifyService';
 import fallbackImage from './assets/fallbackimg.jpg';
 
-const Search = ({openChat}) => {
-  const [query, setQuery] = useState('');
+const Search = ({openChat, setSearchState, searchState }) => {
+  const [query, setQuery] = useState(searchState || '');
   const [artists, setArtists] = useState([]);
 
-  const search = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    setQuery(searchState);
+  }, [searchState]);
+
+  const search = async () => {
+    setSearchState(query);
     const artistResults = await searchArtists(query);
     const artistsWithAlbums = await Promise.all(artistResults.map(async artist => {
       const albumResults = await searchAlbums(artist.id);
@@ -17,9 +21,20 @@ const Search = ({openChat}) => {
     setArtists(artistsWithAlbums);
   };
 
+  useEffect(() => {
+    if (searchState) {
+      search();
+    }
+  }, [searchState]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    search();
+  };
+
   return (
     <div>
-      <form onSubmit={search} className='SearchBar'>
+      <form onSubmit={handleSubmit} className='SearchBar'>
             <input type="text" value={query} onChange={e => setQuery(e.target.value)} />
             <button type="submit">Search</button>
       </form>

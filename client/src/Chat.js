@@ -1,63 +1,68 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 
-let socket;
-
-const Chat = ({ artist, setOpenChatCheck }) => {
+const Chat = ({ setOpenChatCheck, artist, sId}) => {
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
+  const socket = useRef();
 
   useEffect(() => {
-    socket = io('http://localhost:3001');
-  
-    socket.on('connect', () => {
-      console.log('Connected to server');
-      socket.emit('join room', artist); // Join a room for this artist
+    socket.current = io('ws://localhost:3001');
+    
+    socket.current.on('connect', () => {
+      console.log('Socket connection established');
+      // Emit the 'join room' event when the socket connection is established
+      socket.current.emit('join room', artist); // Emitting with the artist's name
     });
 
-    socket.on('chat message', (msg) => {
-      console.log(`Received message: ${msg.message}`);
-      setChat((chat) => [...chat, msg]); // Use function form of setChat
-    });
-
-    // Retrieve messages for this artist
-    socket.emit('get messages', artist, (messages) => {
-      setChat(messages);
+    socket.current.on('chat message', (data) => {
+      const newMessage = { ...data, id: generateUniqueId() };
+      console.log('New message received in Chat:', newMessage);
+      setChat((oldChat) => [...oldChat, newMessage]); // Update chat state with the new message
     });
 
     return () => {
-      socket.emit('leave room', artist); // Leave the room when the component unmounts
-      socket.disconnect();
+      socket.current.disconnect();
+      console.log('Socket connection disconnected');
     };
-  }, [artist]); // Remove chat from the dependency array
+  }, [artist]);
 
-  const chatCloseHandler = () => {
+  const sendMessage = (e) => {
+    e.preventDefault();
+    if (message) {
+      const newMessage = { artist: artist, message: message, id: generateUniqueId() };
+      //setChat((oldChat) => [...oldChat, newMessage]); // Update local state with sent message
+      socket.current.emit('chat message', { sId: sId, artist: artist, message: message });
+      console.log(`Sent message to ${artist}: ${message}`);
+      setMessage(''); // Clear message input after sending
+    }
+  };
+
+  const closeChat = () => {
+    socket.current.disconnect();
     setOpenChatCheck(false);
   };
-  
-  const submitMessage = (e) => {
-    e.preventDefault();
-    console.log(`Sending message: ${message}`);
-    socket.emit('chat message', { artist, message }, (response) => {
-    console.log('Server response:', response);
-     }); // Include the artist in the message
-    setMessage('');
+
+  const generateUniqueId = () => {
+    return Math.random().toString(36).substr(2, 9); // Example of generating a random ID
   };
 
   return (
     <div>
-      <form onSubmit={submitMessage}>
+      <form onSubmit={sendMessage}>
         <input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message"
+          placeholder="Your message"
         />
         <button type="submit">Send</button>
       </form>
-      {chat.map((msg, index) => (
-            <div key={index} className='MessageText'>{msg.message}</div>
+      <ul>
+        {chat.map((msg) => (
+          <li className='message' key={msg.id}>{msg.artist} {msg.message}</li>
         ))}
-        <button onClick={chatCloseHandler}>Close Chat</button>
+      </ul>
+      <button onClick={closeChat}>Close Chat</button>
     </div>
   );
 };
