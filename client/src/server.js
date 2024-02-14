@@ -28,9 +28,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('chat message', ({ artist, message }) => {
-    console.log(`Received message from ${socket.id.slice(0,5)}: ${message}`);
-    io.to(artist).emit('chat message', { id: socket.id, message });
-    console.log(`${socket.id} sent message to room ${artist}`);
+    const sId = socket.id.slice(0,5);
+    console.log(`Received message from ${sId}: ${message}`);
+    io.to(artist).emit('chat message', { id: sId, message });
+    console.log(`${sId} sent message to room ${artist}`);
   });
 
   socket.on('disconnect', () => {

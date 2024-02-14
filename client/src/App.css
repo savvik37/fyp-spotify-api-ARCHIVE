@@ -23,7 +23,7 @@ body{
 .MainContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(70%, 1fr));
-  gap: 20px;
+  gap: 5px;
 }
 
 @media (min-width: 552px) {
@@ -163,4 +163,36 @@ body{
 
 .message{
   list-style: none;
+  margin: auto;
+  padding: 7px;
+  padding: none;
+  border-radius: 7px;
+  max-width: 300px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(61, 106, 231);
+}
+
+.MessageBox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.user-message {
+  list-style: none;
+  margin: auto;
+  padding: 7px;
+  padding: none;
+  border-radius: 7px;
+  max-width: 300px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(206, 206, 206);
+  color: rgb(70, 70, 70);
+  font-weight: bolder;
 }
