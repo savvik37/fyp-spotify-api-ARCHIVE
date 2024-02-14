@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {searchArtists, searchAlbums} from './SpotifyService';
 import fallbackImage from './assets/fallbackimg.jpg';
 
-const Search = () => {
+const Search = ({openChat}) => {
   const [query, setQuery] = useState('');
   const [artists, setArtists] = useState([]);
 
@@ -25,7 +25,7 @@ const Search = () => {
       </form>
         <div className='MainContainer'>
         {artists.map(artist => (
-        <div key={artist.id} className='ArtistBox'>
+        <div key={artist.id} className='ArtistBox' onClick={() => openChat(artist.name)}>
             <div className='ArtistBoxHeader'>
                 <h2 className='ArtistBoxName'>{artist.name}</h2>
                 <h2 className='ArtistBoxPopularity'>Popularity: {artist.popularity}</h2>

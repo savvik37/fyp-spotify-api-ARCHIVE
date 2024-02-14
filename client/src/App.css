@@ -58,6 +58,7 @@ body{
   padding-left: 1%;
   padding-right: 1%;
   font-weight: bold;
+  font-size: medium;
 }
 
 .ArtistBoxPopularity {
@@ -70,6 +71,13 @@ body{
   padding-left: 1%;
   padding-right: 1%;
   font-weight: lighter;
+  font-size: medium;
+}
+
+@media (max-width: 552px) {
+  .ArtistBoxName, .ArtistBoxPopularity {
+    font-size: large;
+  }
 }
 
 .ArtistBoxImg{
@@ -147,4 +155,8 @@ body{
   white-space: nowrap;
   margin: auto;
   margin-bottom: 10px;
+}
+
+.MessageText{
+  color: white;
 }
