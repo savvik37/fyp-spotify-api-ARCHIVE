@@ -173,7 +173,7 @@ body{
   background-color: rgb(61, 106, 231);
 }
 
-.MessageBox{
+.MessageBox {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -181,8 +181,9 @@ body{
   margin: auto;
   margin-top: 20px;
   margin-bottom: 20px;
+  max-height: 100vh; /* Set the maximum height to the height of the viewport */
+  overflow-y: auto; /* Enable vertical scrolling when the content exceeds the maximum height */
 }
-
 .user-message {
   list-style: none;
   margin: auto;
@@ -195,4 +196,95 @@ body{
   background-color: rgb(206, 206, 206);
   color: rgb(70, 70, 70);
   font-weight: bolder;
+}
+
+.messageSender {
+  position: fixed; /* Make the position relative to the viewport */
+  bottom: 0; /* Position it at the bottom of the viewport */
+  left: 0; /* Position it at the left of the viewport */
+  right: 0; /* Position it at the right of the viewport */
+  width: calc(100% - 50px); /* Subtract left and right margins from width */
+  max-width: 900px; /* Set a maximum width */
+  margin: 0 auto; /* Center the element */
+  background: #fff; /* Give it a background color to overlay the content below it */
+  background-color: rgb(70, 70, 70);
+  box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1); /* Add a shadow for a lifting effect */
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Distribute space between the form and the button */
+  box-sizing: border-box; /* Include padding and border in total width and height */
+  border-radius: 10px;
+  padding: 10px; /* Add some padding */
+  margin-bottom: 10px;
+}
+
+.messageSender form {
+  display: flex; /* Use flexbox for layout */
+  flex-grow: 1; /* Allow the form to take up the remaining space */
+  margin-right: 10px; /* Add some margin to the right */
+ 
+}
+
+.messageSender input {
+  flex-grow: 1; /* Allow the input to take up the remaining space in the form */
+  margin-right: 10px; /* Add some margin to the right */
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(107, 107, 107);
+  color: white;
+  font-size: 16px; /* Set font-size to at least 16px */
+  font-weight: 100;
+}
+
+.messageSender input::placeholder {
+  color: white;
+  font-weight: 100;
+}
+
+.messageSender button {
+  background-color: rgb(46, 46, 46);
+  color: white;
+  font-family: 'DMSans', sans-serif;
+  font-weight: thin;
+  border-style: none;
+  border-radius: 10px;
+  margin-left: 2.5px;
+  font-size: small;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.ArtistChatBox{
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(70, 70, 70);
+  border-radius: 10px;
+  max-width: 30%;
+  margin: auto;
+  font-size: small;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+.ArtistChatBox button{
+  background-color: rgb(46, 46, 46);
+  color: white;
+  font-family: 'DMSans', sans-serif;
+  font-weight: thin;
+  border-style: none;
+  border-radius: 10px;
+  margin-left: 2.5px;
+  font-size: small;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: auto;
+  margin-right: 5px;
+}
+
+.ArtistChatBox h2{
+  margin-left: 5px;
 }

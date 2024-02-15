@@ -13,13 +13,13 @@ const Chat = ({ setOpenChatCheck, artist, sId}) => {
     socket.current.on('connect', () => {
       console.log('Socket connection established');
       console.log('Local socket id:', socket.current.id); // Log the local socket id
-      localTheme.current = socket.current.id; // Update localTheme here
+      localTheme.current = socket.current.id.slice(0, 5);// Update localTheme here
       socket.current.emit('join room', artist);
     });
 
     socket.current.on('chat message', (data) => {
       console.log('Incoming message sId:', data.id);
-      console.log('Current user sId:', data.id);
+      console.log('Current user sId:', localTheme.current);
       const newMessage = { ...data, userSent: data.id === sId };
       console.log('New message received in Chat:', newMessage);
       setChat((oldChat) => [...oldChat, newMessage]);
@@ -48,14 +48,24 @@ const Chat = ({ setOpenChatCheck, artist, sId}) => {
 
   return (
     <div>
-      <form onSubmit={sendMessage}>
-        <input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Your message"
-        />
-        <button type="submit">Send</button>
-      </form>
+      
+      <div className='messageSender'>
+        <form onSubmit={sendMessage}>
+          <input
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+           placeholder="Type a message..."
+          />
+         <button type="submit">Send</button>
+        </form>
+        
+      </div>
+
+      <div className='ArtistChatBox'>
+        <h2>{artist}</h2>
+        <button onClick={closeChat}>Close Chat</button>
+      </div>
+      
       <div className='MessageBox'>
         {chat.map((msg, index) => (
           <div key={index}>
@@ -64,7 +74,6 @@ const Chat = ({ setOpenChatCheck, artist, sId}) => {
           </div>
         ))}
       </div>
-      <button onClick={closeChat}>Close Chat</button>
     </div>
   );
 };
