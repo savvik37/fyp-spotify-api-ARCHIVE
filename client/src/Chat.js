@@ -1,63 +1,79 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 
-let socket;
-
-const Chat = ({ artist, setOpenChatCheck }) => {
+const Chat = ({ setOpenChatCheck, artist, sId}) => {
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
+  const socket = useRef();
+  const localTheme = useRef(); // Use useRef instead of useState
 
   useEffect(() => {
-    socket = io('http://localhost:3001');
-  
-    socket.on('connect', () => {
-      console.log('Connected to server');
-      socket.emit('join room', artist); // Join a room for this artist
+    socket.current = io('ws://192.168.0.82:3001');
+    
+    socket.current.on('connect', () => {
+      console.log('Socket connection established');
+      console.log('Local socket id:', socket.current.id); // Log the local socket id
+      localTheme.current = socket.current.id.slice(0, 5);// Update localTheme here
+      socket.current.emit('join room', artist);
     });
 
-    socket.on('chat message', (msg) => {
-      console.log(`Received message: ${msg.message}`);
-      setChat((chat) => [...chat, msg]); // Use function form of setChat
-    });
-
-    // Retrieve messages for this artist
-    socket.emit('get messages', artist, (messages) => {
-      setChat(messages);
+    socket.current.on('chat message', (data) => {
+      console.log('Incoming message sId:', data.id);
+      console.log('Current user sId:', localTheme.current);
+      const newMessage = { ...data, userSent: data.id === sId };
+      console.log('New message received in Chat:', newMessage);
+      setChat((oldChat) => [...oldChat, newMessage]);
     });
 
     return () => {
-      socket.emit('leave room', artist); // Leave the room when the component unmounts
-      socket.disconnect();
+      socket.current.disconnect();
+      console.log('Socket connection disconnected');
     };
-  }, [artist]); // Remove chat from the dependency array
+  }, [artist, sId]);
 
-  const chatCloseHandler = () => {
-    setOpenChatCheck(false);
-  };
-  
-  const submitMessage = (e) => {
+  const sendMessage = (e) => {
     e.preventDefault();
-    console.log(`Sending message: ${message}`);
-    socket.emit('chat message', { artist, message }, (response) => {
-    console.log('Server response:', response);
-     }); // Include the artist in the message
-    setMessage('');
+    if (message) {
+      socket.current.emit('chat message', { sId: socket.current.id, artist: artist, message: message });
+      console.log(`message sent from ${socket.current.id} to ${artist}: ${message}`);
+      console.log(`Sent message to ${artist}: ${message}`);
+      setMessage('');
+    }
+  };
+
+  const closeChat = () => {
+    socket.current.disconnect();
+    setOpenChatCheck(false);
   };
 
   return (
     <div>
-      <form onSubmit={submitMessage}>
-        <input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message"
-        />
-        <button type="submit">Send</button>
-      </form>
-      {chat.map((msg, index) => (
-            <div key={index} className='MessageText'>{msg.message}</div>
+      
+      <div className='messageSender'>
+        <form onSubmit={sendMessage}>
+          <input
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+           placeholder="Type a message..."
+          />
+         <button type="submit">Send</button>
+        </form>
+        
+      </div>
+
+      <div className='ArtistChatBox'>
+        <h2>{artist}</h2>
+        <button onClick={closeChat}>Close Chat</button>
+      </div>
+      
+      <div className='MessageBox'>
+        {chat.map((msg, index) => (
+          <div key={index}>
+            <p className="sender-id">Sender ID: {msg.id}</p>
+            <p className={`message ${msg.id === localTheme.current ? 'user-message' : ''}`}>{msg.message}</p>
+          </div>
         ))}
-        <button onClick={chatCloseHandler}>Close Chat</button>
+      </div>
     </div>
   );
 };
