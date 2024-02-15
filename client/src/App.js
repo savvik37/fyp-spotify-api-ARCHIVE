@@ -28,6 +28,7 @@ function App() {
 
   return (
     <div className='App'>
+      {!openChatCheck && <h1 className="mainH1">spotifygroupsearch.io</h1>}
       <div>
         {latestMessage && (
         <div className="LatestMessage">
