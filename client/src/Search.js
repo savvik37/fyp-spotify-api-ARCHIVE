@@ -1,35 +1,34 @@
-// Search.js
 import React, { useState, useEffect } from 'react';
-import {searchArtists, searchAlbums} from './SpotifyService';
-import fallbackImage from './assets/fallbackimg.jpg';
+import {searchArtists, searchAlbums} from './SpotifyService'; //importing searchArtists and searchAlbums functions from SpotifyService
+import fallbackImage from './assets/fallbackimg.jpg'; //importing fallback image if no image is found
 
 const Search = ({openChat, setSearchState, searchState }) => {
-  const [query, setQuery] = useState(searchState || '');
-  const [artists, setArtists] = useState([]);
+  const [query, setQuery] = useState(searchState || ''); //query state - equal to searchState or empty string
+  const [artists, setArtists] = useState([]); //artists state - empty array
 
   useEffect(() => {
-    setQuery(searchState);
+    setQuery(searchState); //updating query with value of searchState
   }, [searchState]);
 
-  const search = async () => {
-    setSearchState(query);
-    const artistResults = await searchArtists(query);
-    const artistsWithAlbums = await Promise.all(artistResults.map(async artist => {
-      const albumResults = await searchAlbums(artist.id);
-      return { ...artist, albums: albumResults };
+  const search = async () => { //async function to search for artists
+    setSearchState(query); //setting searchState to query
+    const artistResults = await searchArtists(query); //waiting for searchArtists to return results - results are stored in artistResults
+    const artistsWithAlbums = await Promise.all(artistResults.map(async artist => { //waiting for all artists to have their albums fetched
+      const albumResults = await searchAlbums(artist.id); //waiting for searchAlbums to return results - results are stored in albumResults
+      return { ...artist, albums: albumResults }; //returning artist object with albums property
     }));
-    setArtists(artistsWithAlbums);
+    setArtists(artistsWithAlbums); //updating artists state with artistsWithAlbums
   };
 
   useEffect(() => {
     if (searchState) {
-      search();
+      search(); //calling search function
     }
   }, [searchState]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    search();
+    search(); //calling search function
   };
 
   return (

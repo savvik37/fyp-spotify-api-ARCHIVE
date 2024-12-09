@@ -186,9 +186,9 @@ body{
   flex-direction: column;
   margin: auto;
   margin-top: 20px;
-  margin-bottom: 20px;
-  max-height: 100vh; /* Set the maximum height to the height of the viewport */
-  overflow-y: auto; /* Enable vertical scrolling when the content exceeds the maximum height */
+  margin-bottom: 120px;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 .user-message {
   list-style: none;
@@ -205,39 +205,39 @@ body{
 }
 
 .messageSender {
-  position: fixed; /* Make the position relative to the viewport */
-  bottom: 0; /* Position it at the bottom of the viewport */
-  left: 0; /* Position it at the left of the viewport */
-  right: 0; /* Position it at the right of the viewport */
-  width: calc(100% - 50px); /* Subtract left and right margins from width */
-  max-width: 900px; /* Set a maximum width */
-  margin: 0 auto; /* Center the element */
-  background: #fff; /* Give it a background color to overlay the content below it */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: calc(100% - 50px);
+  max-width: 900px;
+  margin: 0 auto;
+  background: #fff;
   background-color: rgb(70, 70, 70);
-  box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1); /* Add a shadow for a lifting effect */
-  display: flex; /* Use flexbox for layout */
-  justify-content: space-between; /* Distribute space between the form and the button */
-  box-sizing: border-box; /* Include padding and border in total width and height */
+  box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
   border-radius: 10px;
-  padding: 10px; /* Add some padding */
+  padding: 10px;
   margin-bottom: 10px;
 }
 
 .messageSender form {
-  display: flex; /* Use flexbox for layout */
-  flex-grow: 1; /* Allow the form to take up the remaining space */
-  margin-right: 10px; /* Add some margin to the right */
+  display: flex;
+  flex-grow: 1;
+  margin-right: 10px;
  
 }
 
 .messageSender input {
-  flex-grow: 1; /* Allow the input to take up the remaining space in the form */
-  margin-right: 10px; /* Add some margin to the right */
+  flex-grow: 1;
+  margin-right: 10px;
   border-radius: 10px;
   border: none;
   background-color: rgb(107, 107, 107);
   color: white;
-  font-size: 16px; /* Set font-size to at least 16px */
+  font-size: 16px;
   font-weight: 100;
 }
 
@@ -263,10 +263,14 @@ body{
 
 .ArtistChatBox{
   display: flex;
+  position: fixed;
+  left: 50%;
+  top: 3%;
+  transform: translate(-50%, -50%);
   justify-content: space-between;
   background-color: rgb(70, 70, 70);
   border-radius: 10px;
-  max-width: 30%;
+  max-width: 40%;
   margin: auto;
   font-size: small;
   padding-right: 10px;
@@ -293,4 +297,13 @@ body{
 
 .ArtistChatBox h2{
   margin-left: 5px;
+}
+
+.signInBox{
+  border: 1px solid rgb(177, 177, 177);
+  border-radius: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
