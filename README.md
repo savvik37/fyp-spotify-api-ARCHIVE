@@ -5,3 +5,6 @@
 3. App should be running on port 3000
 
 ARCHIVED
+
+## SPOTIFY MESSENGER APP
+This is the archive of my BSc final year project/dissertation, a Spotify messenger web app built using the MERN stack. This web app utilises the Spotify Web API to fetch artists and create group chats tied directly to them. Users simply search for an artist of their liking and enter the group chat.
